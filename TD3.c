@@ -375,6 +375,7 @@ int main () {
     printf("\n");
 
     //Test reverse
+    
     printf("Liste avant inversion: ");
     for (CelluleD *c = result.head; c != NULL; c = c->suivant) {
         printf("%d ", c->val);
