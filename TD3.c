@@ -111,6 +111,7 @@ int element_remove (Liste *l, int element){
 
 //Maintenant, je vais implémenter les fonctions pour la liste doublement chaînée
 //Les opérations à changé sont lenght, clear, cons, append et remove (On rajoutera un D pour les nouvelles versions)
+
 int clearD(ListeD *l) {
     CelluleD *c = l->head;
     while (c != NULL) {
