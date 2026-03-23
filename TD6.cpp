@@ -29,6 +29,34 @@ class Point {
         virtual void afficher() {
             cout <<"("<< x <<","<< y <<")"<< endl;
         }        
+        int getX(){
+            return x;
+        }
+        int getY(){
+            return y;
+        }
+};
+
+class Rectangle {
+    private :
+        Point hautGauche();
+        int longueur, largeur;
+        static int nbRectangles;
+        Rectangle(Point &p1, Point &p2){
+            largeur=p1.getX-p2.getX;
+            longueur=p1.getY-p2.getY;
+        }
+    public :
+        static int incr_nbRectangle (){
+            nbRectangles ++;
+        }
+
+        static int decr_nbRectangle(){
+            nbRectangles --;
+        }
+        Rectangle creerDepuisPoints(Point &p1, Point &p2){
+            
+        }
 };
 
 int main() {
