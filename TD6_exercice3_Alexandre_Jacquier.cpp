@@ -1,7 +1,6 @@
-
 #include <iostream>
-#include<cmath>
-#include<string>
+#include <string>
+
 using namespace std;
 
 class Client {
@@ -10,6 +9,7 @@ class Client {
         string prenom;
         int id;
         static int compteur;
+        
     public:
         Client() {
             nom = "";
@@ -34,6 +34,7 @@ class FileDAttente {
         Client *tab;
         int tailleCourante;
         int capacite;
+        
     public:
         FileDAttente(int capacite) {
             this->capacite = capacite;
@@ -49,9 +50,13 @@ class FileDAttente {
             } else {
                 int nouvelle_taille = capacite * 2;
                 Client *nouveau_tab = new Client[nouvelle_taille];
-                for (int i = 0; i<tailleCourante; i++) {
-                    nouveau_tab[i] = tab [i];
+                for (int i = 0; i < tailleCourante; i++) {
+                    nouveau_tab[i] = tab[i];
                 }
+                
+                // LA FAMEUSE LIGNE AJOUTÉE POUR ÉVITER LA FUITE DE MÉMOIRE !
+                delete[] tab; 
+                
                 tab = nouveau_tab;
                 capacite = nouvelle_taille;
                 tab[tailleCourante++] = c;
@@ -65,21 +70,28 @@ class FileDAttente {
                 tailleCourante--;
             }
         }
-        void passeDevant (int idRecherche){
-            for (int i =0; i<tailleCourante; i++) {
+        void passeDevant(int idRecherche) {
+            for (int i = 0; i < tailleCourante; i++) {
                 if (tab[i].getId() == idRecherche) {
-                    Client temp = tab[i];
-                    for (int j = i; j > 0; j--) {
-                        tab[j] = tab[j - 1];
+                    if (i > 0) { 
+                        Client temp = tab[i];
+                        tab[i] = tab[i - 1];
+                        tab[i - 1] = temp;
                     }
+                    break;
                 }
             }
         } 
-
+        void afficher() {
+            for (int i = 0; i < tailleCourante; i++) {
+                tab[i].afficher();
+            }
+        }
 };
 
-
-int main(){
+int Client::compteur = 1;
+    
+int main() {
     FileDAttente file(2);
     Client c1("Dupont", "Jean");
     Client c2("Durand", "Marie");
@@ -87,12 +99,12 @@ int main(){
     
     file.ajouter(c1);
     file.ajouter(c2);
-    file.ajouter(c3);
+    file.ajouter(c3); 
 
     cout << "Clients dans la file d'attente:" << endl;
-    for (int i = 0; i < 3; i++) {
-        file.tab[i].afficher();
-    }
+    file.afficher();
 
     return 0;
 }
+
+//Je n'arrive pas a compiler le code, je ne comprend pas pourquoi.
