@@ -11,15 +11,23 @@ class Client {
         int id;
         static int compteur;
     public:
+        Client() {
+            nom = "";
+            prenom = "";
+            id = 0;
+        }
         Client(string nom, string prenom) {
             this->nom = nom;
             this->prenom = prenom;
-            this->id = ++compteur;
+            this->id = compteur++;
         }
         void afficher() {
             cout << "Client: " << nom << " " << prenom << ", ID: " << id << endl;
         }
-}
+        int getId() {
+            return id;
+        }
+};
 
 class FileDAttente {
     private:
@@ -68,32 +76,8 @@ class FileDAttente {
             }
         } 
 
-}
+};
 
-int main(){
-    FileDAttente file(2);
-    Client c1("Dupont", "Jean");
-    Client c2("Durand", "Marie");
-    Client c3("Martin", "Paul");
-    
-    file.ajouter(c1);
-    file.ajouter(c2);
-    file.ajouter(c3);
-    
-    cout << "Clients dans la file d'attente:" << endl;
-    for (int i = 0; i < 3; i++) {
-        file.getClient(i).afficher();
-    }
-
-    file.suivant(); // Remove the first client (c1)
-
-    cout << "Clients après avoir retiré le premier client:" << endl;
-    for (int i = 0; i < 2; i++) {
-        file.getClient(i).afficher();
-    }
-
-    return 0;
-}
 
 int main(){
     FileDAttente file(2);
@@ -107,14 +91,7 @@ int main(){
 
     cout << "Clients dans la file d'attente:" << endl;
     for (int i = 0; i < 3; i++) {
-        file.getClient(i).afficher();
-    }
-
-    file.suivant(); // Remove the first client (c1)
-
-    cout << "Clients après avoir retiré le premier client:" << endl;
-    for (int i = 0; i < 2; i++) {
-        file.getClient(i).afficher();
+        file.tab[i].afficher();
     }
 
     return 0;
