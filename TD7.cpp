@@ -65,12 +65,14 @@ class Renard : public Carnivore {
         int taille = 70;
 };
 
-class Elephant : public Herbivore {
+class Elephant (int taille): public Herbivore {
+    private :
+        int taille;
     public : 
-        int taille = 400;
+        int taille = taille;
 };
 
-main(){
+int main(){
     Chien Medor;
     Chat Felix;
     Medor.crier();
