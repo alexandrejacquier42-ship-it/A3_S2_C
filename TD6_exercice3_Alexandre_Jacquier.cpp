@@ -54,7 +54,6 @@ class FileDAttente {
                     nouveau_tab[i] = tab[i];
                 }
                 
-                // LA FAMEUSE LIGNE AJOUTÉE POUR ÉVITER LA FUITE DE MÉMOIRE !
                 delete[] tab; 
                 
                 tab = nouveau_tab;
