@@ -6,14 +6,28 @@ using namespace std;
 class Animal {
     private:
         string nom;
+        int taille;
         
     public:
-        int taille;
+        Animal(string nom, int taille) {
+            this->nom = nom;
+            this->taille = taille;
+        }
+        int getTaille() {
+            return taille;
+        }
+        int getNom() {
+            return nom;
+        }
+
         virtual void crier(){
             cout << "l'animal crie!" <<endl;
         };
-    virtual ~Animal() {
-    }
+        virtual bool peutManger (Animal &a) =0;
+        
+
+        virtual ~Animal() {
+        }
 };
 
 class Chien : public Animal {
@@ -32,6 +46,10 @@ class Chat : public Animal {
 
 class Herbivore : public Animal {
     public : 
+        Herbivore(string nom, int taille){
+            this->nom = nom;
+            this->taille = taille;
+        }
         virtual bool peutManger (){
             return false;
 
@@ -40,8 +58,12 @@ class Herbivore : public Animal {
 
 class Carnivore : public Animal {
     public :
+        Carnivore(string nom, int taille){
+            this->nom = nom;
+            this->taille = taille;
+        }
         virtual bool peutManger (Animal &a){
-            if (a.taille > this->taille){
+            if (a.getTaille() > this->getTaille()){
                 return false;
             }
             else {
@@ -52,25 +74,29 @@ class Carnivore : public Animal {
 
 class Lapin : public Herbivore {
     public : 
-        int taille = 30;
+        Lapin("Lapin", 30) : Herbivore("Lapin", 30) {
+        }
 };
 
 class Lion : public Carnivore {
     public : 
-        int taille = 200;
+        Lion("Lion", 150) : Carnivore("Lion", 150) {
+        }
 };
 
 class Renard : public Carnivore {
     public : 
-        int taille = 70;
+        Renard("Renard", 70) : Carnivore("Renard", 70) {
+        }
 };
 
-class Elephant (int taille): public Herbivore {
-    private :
-        int taille;
+class Elephant : public Carnivore {
     public : 
-        int taille = taille;
+        Elephant("Elephant", 400) : Carnivore("Elephant", 400) {
+        }
 };
+
+
 
 int main(){
     Chien Medor;
@@ -80,7 +106,54 @@ int main(){
     Animal *ptr;
     ptr = &Felix;
     ptr->crier();
-    //L'appel avec le pointeur affiche bien "Miaou!"
-    //Exercice 2 : cannot declare variable 'a' to be of abstract type 'Animal' . C'est normal, on ne peut pas instancier une classe abstraite.
+
+    Animal* animaux[6];
+    animaux[0] = new Lion();
+    animaux[1] = new Lapin();
+    animaux[2] = new Renard();
+    animaux[3] = new Lapin();
+    animaux[4] = new Elephant();
+    animaux[5] = new Renard();
+
+    bool result = true;
+
+    while result {
+        relust = false;
+        for (int i = 0, i < 6; i++){
+            if (animaux[i]!=nullptr&&animaux[i+1]!=nullptr){
+                if (animaux[i]->peutManger(*animaux[i+1])){
+                    cout << animaux[i]->getNom()<<"mange"<<animaux[i+1]->getNom()<< endl;
+                    delete animaux[i+1];
+                    animaux[i+1] = nullptr;
+                    result = false;
+                }
+            }
+        }
+        if result {
+            int j=0;
+            for (int i = 0, i<6;i++){
+                if animaux[i]!=nullptr{
+                    animaux[j] = animaux[i];
+                    if (j!=i){
+                        animaux[i] = nullptr;
+                    }
+                    j++;
+                }
+            }
+        }
+    }
+        // --- Affichage des survivants ---
+    cout << "\n=== Survivants ===" << endl;
+    for (int i = 0; i < nbAnimaux; i++) {
+        cout << "- " << animaux[i]->getNom()
+             << " (taille " << animaux[i]->getTaille() << ")" << endl;
+    }
+
+    // --- Libération de la mémoire restante ---
+    // On delete chaque survivant pour éviter les fuites mémoire
+    for (int i = 0; i < nbAnimaux; i++) {
+        delete animaux[i];
+        animaux[i] = nullptr;
+    }
     return 0;
 }
