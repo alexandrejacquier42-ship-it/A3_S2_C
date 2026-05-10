@@ -16,8 +16,8 @@ class Animal {
         int getTaille() {
             return taille;
         }
-        int getNom() {
-            return nom;
+        string getNom() {
+            return this->nom;
         }
 
         virtual void crier(){
