@@ -4,13 +4,14 @@
 #include <ctime>
 #include <windows.h> //Cette bibliotech et son utilisation dans le main, je l'ai trouvé sur internet,
                      // cela sert juste à avoir une présentation correcte avec les accents ect... 
-
+#include<vector>
 using namespace std;
+
 
 class Capteur {
     private :
-     int id;
-     string unite;
+        int id;
+        string unite;
     public :
         Capteur(int id, string unite){
             this->id=id;
@@ -71,24 +72,15 @@ class Pressiometre : public Capteur {
 
 class UniteDeControle{
     private :
-        Capteur* capteurs[10];
+        std::vector<Capteur*> capteurs;
         int nbcapteur;
     public : 
         UniteDeControle (){
-            nbcapteur=this->nbcapteur=0;
-
-            for (int i=0; i<10; i++){
-                this->capteurs[i]=nullptr;
-            }
+            nbcapteur=this->nbcapteur;
         }
 
         void ajouterCapteur(Capteur* c){
-            if(this->nbcapteur>=10){
-                cout <<"Erreur : il y a le nombre maximal de capteur"<<endl;
-                delete c;
-                return;
-            }
-            this->capteurs[this->nbcapteur]=c;
+            this->capteurs.push_back(c);
             this->nbcapteur++;
         }
 
@@ -106,11 +98,9 @@ class UniteDeControle{
         }
         ~UniteDeControle(){
             for (int i = 0; i < this->nbcapteur; i++) {
-                if (this->capteurs[i] != nullptr) {
-                    delete this->capteurs[i];
-                    this->capteurs[i] = nullptr;
-                }
+                delete this->capteurs[i];
             }
+            capteurs.clear();
         }
 };
 
@@ -128,8 +118,10 @@ int main() {
     if (alertes > 0) {
         cout << "\n" << alertes << " capteur(s) en alerte !" << endl;
         cout <<"\nALERTE : Maintenance immédiate requise !"<< endl;
-    } else {
+    } 
+    else {
         cout << "\nPas d'alerte." << endl;
     }
+    uc.~UniteDeControle();
     return 0;
 }
